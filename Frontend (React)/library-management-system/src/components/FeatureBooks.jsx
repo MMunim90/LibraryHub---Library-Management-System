@@ -39,7 +39,7 @@ const FeatureBooks = () => {
       {/* <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-indigo-400/10 blur-3xl" /> */}
 
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-8xl">
         {/* Section heading */}
         <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -188,7 +188,7 @@ const FeatureBooks = () => {
         </div>
 
         {/* Bottom tagline */}
-        <div className="mt-8 border-t border-blue-300/10 pt-6 text-center">
+        <div className="mt-8 pt-6 text-center">
           <p className="text-sm text-slate-400">
             <span className="font-semibold text-blue-200">LibraryHub</span> —
             Discover Books, Explore Knowledge, and Learn Without Limits.

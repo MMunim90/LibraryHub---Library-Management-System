@@ -11,6 +11,7 @@ import MyReserve from "../pages/MyReserve";
 import Forbidden from "../pages/Forbidden";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/UserProfile";
+import ManageBooks from "../pages/admin/ManageBooks";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "myReserve",
         element: <MyReserve />,
+      },
+      {
+        path: "manageBooks",
+        element: <ManageBooks />,
       },
     ],
   },

@@ -5,7 +5,8 @@ import {
   BookmarkCheck,
   Menu,
   X,
-  UserRound
+  UserRound,
+  BookOpen
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -26,6 +27,11 @@ const Dashboard = () => {
       title: "My Reservations",
       path: "/dashboard/myReserve",
       icon: BookmarkCheck,
+    },
+    {
+      title: "Manage Books",
+      path: "/dashboard/manageBooks",
+      icon: BookOpen,
     },
   ];
 
