@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { baseURL } from "../services/BaseURL";
 import { Eye, EyeOff } from "lucide-react";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -26,18 +28,74 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log(formData);
+    try {
+      const res = await fetch(`${baseURL}/create_user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const res = await fetch(`${baseURL}/create_user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+      const data = await res.json().catch(() => null);
 
-    const data = await res.json();
-    console.log(data);
+      if (!res.ok) {
+        throw new Error(
+          data?.detail || data?.message || "Failed to create your account.",
+        );
+      }
+
+      // Close signup and login modals
+      document.getElementById("signup_modal")?.close();
+      document.getElementById("my_modal_3")?.close();
+
+      // Show success message
+      await Swal.fire({
+        icon: "success",
+        title: "Account Created Successfully!",
+        text: "Welcome to LibraryHub! Your account is ready.",
+        background: "#0f172a",
+        color: "#e2e8f0",
+        confirmButtonColor: "#60a5fa",
+        cancelButtonColor: "#475569",
+        iconColor: "#34d399",
+        confirmButtonText: "Great!",
+        customClass: {
+          popup: "libraryhub-swal",
+          title: "libraryhub-swal-title",
+          confirmButton: "libraryhub-swal-button",
+        },
+      });
+
+      // Reset the form
+      setFormData({
+        firstname: "",
+        lastname: "",
+        username: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        role: "",
+      });
+
+      setShowPassword(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: error.message || "Something went wrong. Please try again.",
+        background: "#0f172a",
+        color: "#e2e8f0",
+        confirmButtonColor: "#60a5fa",
+        iconColor: "#f87171",
+        confirmButtonText: "Okay",
+        customClass: {
+          popup: "libraryhub-swal",
+          title: "libraryhub-swal-title",
+          confirmButton: "libraryhub-swal-button",
+        },
+      });
+    }
   };
 
   return (
@@ -181,8 +239,12 @@ const SignUp = () => {
         </fieldset>
 
         {/* Submit */}
-        <button type="submit" className="btn btn-primary mt-4 w-full">
-          Create Account
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn btn-primary mt-4 w-full"
+        >
+          {isSubmitting ? "Creating Account..." : "Create Account"}
         </button>
       </form>
 

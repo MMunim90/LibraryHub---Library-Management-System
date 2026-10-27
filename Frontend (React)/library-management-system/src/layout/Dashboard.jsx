@@ -6,7 +6,8 @@ import {
   Menu,
   X,
   UserRound,
-  BookOpen
+  BookOpen,
+  Users
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -32,6 +33,11 @@ const Dashboard = () => {
       title: "Manage Books",
       path: "/dashboard/manageBooks",
       icon: BookOpen,
+    },
+    {
+      title: "Manage Users",
+      path: "/dashboard/manageUsers",
+      icon: Users,
     },
   ];
 
