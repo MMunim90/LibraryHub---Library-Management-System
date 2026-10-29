@@ -43,6 +43,7 @@ const Login = () => {
       });
 
       const userData = await userRes.json();
+      // console.log(userData);
 
       if (userData.detail == "User Not Found!!!") {
         toast.error("Incorrect username or password", {

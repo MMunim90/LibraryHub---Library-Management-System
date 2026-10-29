@@ -869,38 +869,42 @@ const ManageBooks = () => {
                 )}
               </div>
 
-              <div>
-                <label htmlFor="cover_image" className={labelClass}>
-                  Cover Image URL
-                </label>
+              {editingBook && (
+                <div>
+                  <label htmlFor="cover_image" className={labelClass}>
+                    Cover Image URL
+                  </label>
 
-                <input
-                  id="cover_image"
-                  name="cover_image"
-                  type="url"
-                  value={form.cover_image}
-                  onChange={handleChange}
-                  placeholder="https://example.com/book-cover.jpg"
-                  className={inputClass}
-                />
+                  <input
+                    id="cover_image"
+                    name="cover_image"
+                    type="url"
+                    value={form.cover_image}
+                    onChange={handleChange}
+                    placeholder="https://example.com/book-cover.jpg"
+                    className={inputClass}
+                  />
 
-                {form.cover_image && (
-                  <div className="mt-3">
-                    <p className="mb-2 text-xs text-slate-400">Cover preview</p>
-                    <img
-                      src={form.cover_image}
-                      alt="Book cover preview"
-                      className="h-32 w-24 rounded-lg border border-blue-300/20 object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                      onLoad={(e) => {
-                        e.currentTarget.style.display = "block";
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
+                  {form.cover_image && (
+                    <div className="mt-3">
+                      <p className="mb-2 text-xs text-slate-400">
+                        Cover preview
+                      </p>
+                      <img
+                        src={form.cover_image}
+                        alt="Book cover preview"
+                        className="h-32 w-24 rounded-lg border border-blue-300/20 object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                        onLoad={(e) => {
+                          e.currentTarget.style.display = "block";
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
               <div>
                 <label htmlFor="description" className={labelClass}>
                   Description

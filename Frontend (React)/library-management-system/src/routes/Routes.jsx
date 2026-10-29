@@ -13,6 +13,7 @@ import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/UserProfile";
 import ManageBooks from "../pages/admin/ManageBooks";
 import ManageUsers from "../pages/admin/ManageUsers";
+import IssueBooks from "../pages/admin/IssueBooks";
 
 const router = createBrowserRouter([
   {
@@ -37,25 +38,37 @@ const router = createBrowserRouter([
       },
       {
         path: "/books/:id",
-        element: <PrivateRoute><BookDetails /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <BookDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/profile",
-        element: <PrivateRoute><UserProfile /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/*",
+        element: <ErrorPage />,
+      },
+      {
+        path: "/forbidden",
+        element: <Forbidden />,
       },
     ],
   },
   {
-    path: "/*",
-    element: <ErrorPage />,
-  },
-  {
-    path: "/forbidden",
-    element: <Forbidden />,
-  },
-  {
     path: "/dashboard",
-    element: <PrivateRoute><Dashboard /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "myReserve",
@@ -68,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: "manageUsers",
         element: <ManageUsers />,
+      },
+      {
+        path: "issueBooks",
+        element: <IssueBooks />,
       },
     ],
   },

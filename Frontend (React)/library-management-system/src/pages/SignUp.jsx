@@ -53,7 +53,7 @@ const SignUp = () => {
       await Swal.fire({
         icon: "success",
         title: "Account Created Successfully!",
-        text: "Welcome to LibraryHub! Your account is ready.",
+        text: "Welcome to LibraryHub! Login your account and continue.",
         background: "#0f172a",
         color: "#e2e8f0",
         confirmButtonColor: "#60a5fa",

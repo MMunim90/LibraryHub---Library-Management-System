@@ -7,7 +7,8 @@ import {
   X,
   UserRound,
   BookOpen,
-  Users
+  Users,
+  ClipboardList
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -38,6 +39,11 @@ const Dashboard = () => {
       title: "Manage Users",
       path: "/dashboard/manageUsers",
       icon: Users,
+    },
+    {
+      title: "Issue Book",
+      path: "/dashboard/issueBooks",
+      icon: ClipboardList,
     },
   ];
 
