@@ -8,7 +8,8 @@ import {
   UserRound,
   BookOpen,
   Users,
-  ClipboardList
+  ClipboardList,
+  BookMarked,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -29,6 +30,11 @@ const Dashboard = () => {
       title: "My Reservations",
       path: "/dashboard/myReserve",
       icon: BookmarkCheck,
+    },
+    {
+      title: "My Issued Books",
+      path: "/dashboard/myIssuedBooks",
+      icon: BookMarked,
     },
     {
       title: "Manage Books",

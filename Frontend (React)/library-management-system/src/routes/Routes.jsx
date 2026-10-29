@@ -14,6 +14,7 @@ import UserProfile from "../pages/UserProfile";
 import ManageBooks from "../pages/admin/ManageBooks";
 import ManageUsers from "../pages/admin/ManageUsers";
 import IssueBooks from "../pages/admin/IssueBooks";
+import MyIssuedBooks from "../pages/MyIssuedBooks";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "myReserve",
         element: <MyReserve />,
+      },
+      {
+        path: "myIssuedBooks",
+        element: <MyIssuedBooks />,
       },
       {
         path: "manageBooks",
