@@ -13,6 +13,7 @@ import {
   AlertCircle,
   ClipboardList,
   ShieldCheck,
+  BookOpen,
 } from "lucide-react";
 
 import { baseURL } from "../../services/BaseURL";
@@ -532,7 +533,7 @@ const IssueBooks = () => {
 
                           <td className="px-6 py-5">
                             <span className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-sm font-medium text-slate-200">
-                              <img className="h-6 w-6" src="../../public/icon.png" alt="" />
+                              <BookOpen size={16} className="text-blue-300" />
                               {reservation.book_id}
                             </span>
                           </td>
@@ -623,7 +624,7 @@ const IssueBooks = () => {
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
                           <div className="rounded-xl border border-blue-400/20 bg-blue-400/10 p-3">
-                            <img className="h-6 w-6" src="../../public/icon.png" alt="" />
+                            <BookOpen size={16} className="text-blue-300" />
                           </div>
                           <div>
                             <p className="font-semibold text-white">

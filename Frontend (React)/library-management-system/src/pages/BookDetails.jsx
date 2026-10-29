@@ -25,7 +25,8 @@ const BookDetails = () => {
   const [error, setError] = useState("");
   const [imageFailed, setImageFailed] = useState(false);
   const [reserveLoading, setReserveLoading] = useState(false);
-  const [reserved, setReserved] = useState(false);
+  const [reservationStatus, setReservationStatus] = useState(null);
+  const [reservationChecking, setReservationChecking] = useState(true);
   const { accessToken } = useContext(AuthContext);
   //   console.log(accessToken);
 
@@ -79,73 +80,128 @@ const BookDetails = () => {
     return () => controller.abort();
   }, [bookId, id]);
 
-
   useEffect(() => {
-  if (!accessToken || !id) {
-    setReserved(false);
-    return;
-  }
+    const checkReservation = async () => {
+      if (!accessToken || !bookId) {
+        setReservationStatus(null);
+        setReservationChecking(false);
+        return;
+      }
 
-  const checkReservation = async () => {
+      setReservationChecking(true);
+
+      try {
+        const response = await fetch(`${baseURL}/reserve/my`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch reservations");
+        }
+
+        const reservations = await response.json();
+
+        const matchingReservations = reservations
+          .filter(
+            (reservation) => String(reservation.book_id) === String(bookId),
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.reservation_date) - new Date(a.reservation_date),
+          );
+
+        // Use the most recent reservation for this book.
+        const latestReservation = matchingReservations[0];
+
+        const status = latestReservation?.status?.toLowerCase();
+
+        if (status === "pending" || status === "approved") {
+          setReservationStatus(status);
+        } else {
+          // No reservation, or the latest one was cancelled/rejected.
+          setReservationStatus(null);
+        }
+      } catch (error) {
+        console.error("Reservation check failed:", error);
+      } finally {
+        setReservationChecking(false);
+      }
+    };
+
+    checkReservation();
+  }, [accessToken, bookId]);
+
+  const handleReserve = async () => {
+    if (!book || book.available_copies <= 0 || reserveLoading) return;
+
+    if (!accessToken) {
+      await Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please log in to reserve this book.",
+        background: "#0f172a",
+        color: "#e2e8f0",
+        confirmButtonColor: "#3b82f6",
+        iconColor: "#60a5fa",
+      });
+      return;
+    }
+
+    setReserveLoading(true);
+
     try {
-      const response = await fetch(`${baseURL}/reserve/my`, {
-        method: "GET",
+      const response = await fetch(`${baseURL}/reserve/${bookId}`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
+      const data = await response.json().catch(() => null);
+
       if (!response.ok) {
-        throw new Error("Failed to fetch reservations");
+        throw new Error(
+          data?.detail || data?.message || "Failed to reserve this book.",
+        );
       }
 
-      const reservations = await response.json();
+      setReservationStatus("pending");
 
-      const alreadyReserved = reservations.some(
-        (reservation) =>
-          String(reservation.book_id) === String(id)
-      );
-
-      setReserved(alreadyReserved);
+      await Swal.fire({
+        icon: "success",
+        title: "Reservation Successful!",
+        text: `${book.title} has been reserved. Please wait for admin approval.`,
+        background: "#0f172a",
+        color: "#e2e8f0",
+        iconColor: "#60a5fa",
+        confirmButtonColor: "#3b82f6",
+        customClass: {
+          popup: "libraryhub-swal",
+          title: "libraryhub-swal-title",
+          confirmButton: "libraryhub-swal-button",
+        },
+      });
     } catch (error) {
-      console.error("Reservation check failed:", error);
+      await Swal.fire({
+        icon: "error",
+        title: "Reservation Failed",
+        text: error.message || "Something went wrong.",
+        background: "#0f172a",
+        color: "#e2e8f0",
+        confirmButtonColor: "#3b82f6",
+        iconColor: "#f87171",
+        customClass: {
+          popup: "libraryhub-swal",
+          title: "libraryhub-swal-title",
+          confirmButton: "libraryhub-swal-button",
+        },
+      });
+    } finally {
+      setReserveLoading(false);
     }
-  };
-
-  checkReservation();
-}, [accessToken, id]);
-
-  const handleReserve = async () => {
-    if (!book || book.available_copies <= 0) return;
-
-    const res = await fetch(`${baseURL}/reserve/${id}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    setReserveLoading(true);
-    setReserved(true);
-
-    await Swal.fire({
-      icon: "success",
-      title: "Reservation successful!!!",
-      text: `${book.title} reservation successful. Wait for the Admin approval.`,
-      background: "#0f172a",
-      color: "#e2e8f0",
-      iconColor: "#60a5fa",
-      confirmButtonColor: "#3b82f6",
-      customClass: {
-        popup: "libraryhub-swal",
-      },
-    });
-
-    setReserveLoading(false);
-
   };
 
   const isAvailable = book?.available_copies > 0;
@@ -363,40 +419,79 @@ const BookDetails = () => {
               </div>
             </div>
 
-            {/* Reservation */}
+            {/* Reservation Section */}
             <div className="mt-8 rounded-2xl border border-blue-400/20 bg-gradient-to-br from-blue-500/10 to-indigo-500/5 p-5 sm:p-6">
-              <h2 className="text-lg font-bold text-white">
-                Ready to explore this book?
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-400">
-                {isAvailable
-                  ? "Reserve your copy and take the next step in your learning journey."
-                  : "All copies are currently unavailable. Please check back later."}
-              </p>
-
-              {reserved ? (
-                <div className="flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 shadow-lg shadow-amber-950/10 mt-5">
-                  <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" />
-
-                  <p className="text-sm leading-6 text-amber-100">
-                    This book has already been reserved. Please wait for admin
-                    approval.
+              {reservationChecking ? (
+                <>
+                  <h2 className="text-lg font-bold text-white">
+                    Checking Reservation Status...
+                  </h2>
+                  <p className="mt-2 text-sm text-slate-400">
+                    Please wait while we check your reservation.
                   </p>
-                </div>
+                  <span className="loading loading-spinner loading-sm mt-4 text-blue-300" />
+                </>
+              ) : reservationStatus === "pending" ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="text-amber-300" size={22} />
+                    <h2 className="text-lg font-bold text-white">
+                      Reservation Pending
+                    </h2>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    You have already reserved this book. Please wait for the
+                    librarian to approve your request.
+                  </p>
+                  <span className="mt-4 inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1.5 text-xs font-semibold text-amber-300">
+                    Awaiting Approval
+                  </span>
+                </>
+              ) : reservationStatus === "approved" ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="text-emerald-300" size={22} />
+                    <h2 className="text-lg font-bold text-white">
+                      Reservation Approved
+                    </h2>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    Your reservation has been approved by the librarian. Please
+                    follow the library's borrowing instructions.
+                  </p>
+                  <span className="mt-4 inline-flex rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-300">
+                    Approved
+                  </span>
+                </>
               ) : (
-                <button
-                  type="button"
-                  onClick={handleReserve}
-                  disabled={!isAvailable || reserveLoading}
-                  className="btn mt-5 h-12 w-full border-0 bg-blue-500 text-base font-semibold text-white shadow-lg shadow-blue-950/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 sm:w-auto sm:min-w-56"
-                >
-                  {reserveLoading ? (
-                    <span className="loading loading-spinner loading-sm" />
-                  ) : (
-                    <BookmarkPlus size={20} />
-                  )}
-                  {isAvailable ? "Reserve This Book" : "Currently Unavailable"}
-                </button>
+                <>
+                  <h2 className="text-lg font-bold text-white">
+                    Ready to explore this book?
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    {book.available_copies > 0
+                      ? "Reserve your copy and take the next step in your learning journey."
+                      : "All copies are currently unavailable. Please check back later."}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={handleReserve}
+                    disabled={
+                      !isAvailable || reserveLoading || reservationChecking
+                    }
+                    className="btn mt-5 h-12 w-full border-0 bg-blue-500 text-base font-semibold text-white shadow-lg shadow-blue-950/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 sm:w-auto sm:min-w-56"
+                  >
+                    {reserveLoading ? (
+                      <span className="loading loading-spinner loading-sm" />
+                    ) : (
+                      <BookmarkPlus size={20} />
+                    )}
+                    {isAvailable
+                      ? "Reserve This Book"
+                      : "Currently Unavailable"}
+                  </button>
+                </>
               )}
 
               <p className="mt-3 text-xs leading-5 text-slate-500">
