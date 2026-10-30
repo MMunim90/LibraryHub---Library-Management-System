@@ -15,6 +15,7 @@ import ManageBooks from "../pages/admin/ManageBooks";
 import ManageUsers from "../pages/admin/ManageUsers";
 import IssueBooks from "../pages/admin/IssueBooks";
 import MyIssuedBooks from "../pages/MyIssuedBooks";
+import AdminProtected from "./AdminProtected";
 
 const router = createBrowserRouter([
   {
@@ -53,15 +54,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/*",
-        element: <ErrorPage />,
-      },
-      {
-        path: "/forbidden",
-        element: <Forbidden />,
-      },
     ],
+  },
+  {
+    path: "/*",
+    element: <ErrorPage />,
+  },
+  {
+    path: "/forbidden",
+    element: <Forbidden />,
   },
   {
     path: "/dashboard",
@@ -81,15 +82,27 @@ const router = createBrowserRouter([
       },
       {
         path: "manageBooks",
-        element: <ManageBooks />,
+        element: (
+          <AdminProtected>
+            <ManageBooks />
+          </AdminProtected>
+        ),
       },
       {
         path: "manageUsers",
-        element: <ManageUsers />,
+        element: (
+          <AdminProtected>
+            <ManageUsers />
+          </AdminProtected>
+        ),
       },
       {
         path: "issueBooks",
-        element: <IssueBooks />,
+        element: (
+          <AdminProtected>
+            <IssueBooks />
+          </AdminProtected>
+        ),
       },
     ],
   },

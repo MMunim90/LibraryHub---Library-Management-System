@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import {
   Home,
@@ -11,9 +11,13 @@ import {
   ClipboardList,
   BookMarked,
 } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
+  const {authUser} = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const librarian = authUser?.role === "librarian";
 
   const navItems = [
     {
@@ -36,22 +40,23 @@ const Dashboard = () => {
       path: "/dashboard/myIssuedBooks",
       icon: BookMarked,
     },
-    {
+    librarian && {
       title: "Manage Books",
       path: "/dashboard/manageBooks",
       icon: BookOpen,
     },
-    {
+    librarian && {
       title: "Manage Users",
       path: "/dashboard/manageUsers",
       icon: Users,
     },
-    {
+    librarian && {
       title: "Issue Book",
       path: "/dashboard/issueBooks",
       icon: ClipboardList,
     },
-  ];
+    
+  ].filter(Boolean);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 text-slate-100">
