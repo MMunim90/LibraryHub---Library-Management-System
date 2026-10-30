@@ -2,7 +2,7 @@
 
 A full-stack web application built with React, FastAPI, and Supabase PostgreSQL.
 
-- Backend: [FastAPI Fullstack Project Backend](https://github.com/MMunim90/FastAPI-Fullstack-Project-Backend)
+- Backend: [LibraryHub - Backend](https://github.com/MMunim90/FastAPI-Fullstack-Project-Backend)
 
 ## 🚀 Tech Stack
 
