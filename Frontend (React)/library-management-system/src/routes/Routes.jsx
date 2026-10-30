@@ -16,6 +16,7 @@ import ManageUsers from "../pages/admin/ManageUsers";
 import IssueBooks from "../pages/admin/IssueBooks";
 import MyIssuedBooks from "../pages/MyIssuedBooks";
 import AdminProtected from "./AdminProtected";
+import ReturnBooks from "../pages/admin/ReturnBooks";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,14 @@ const router = createBrowserRouter([
         element: (
           <AdminProtected>
             <IssueBooks />
+          </AdminProtected>
+        ),
+      },
+      {
+        path: "returnBook",
+        element: (
+          <AdminProtected>
+            <ReturnBooks />
           </AdminProtected>
         ),
       },

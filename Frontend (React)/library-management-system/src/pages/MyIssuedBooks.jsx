@@ -79,22 +79,22 @@ const MyIssuedBooks = () => {
   }, [accessToken]);
 
   const getStatus = (book) => {
-    const status = (book.status || "").toLowerCase();
+  const status = (book.status || "").trim().toLowerCase();
 
-    if (status === "returned" || book.return_date) {
-      return "returned";
-    }
+  if (status === "returned" || book.return_date) {
+    return "returned";
+  }
 
-    if (status === "overdue" || isOverdue(book.due_date)) {
+  if (status === "issued" || status === "approved") {
+    if (isOverdue(book.due_date)) {
       return "overdue";
     }
 
-    if (status === "issued") {
-      return "issued";
-    }
+    return "issued";
+  }
 
-    return status || "unknown";
-  };
+  return status || "unknown";
+};
 
   const isOverdue = (dueDate) => {
     if (!dueDate) return false;

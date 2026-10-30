@@ -10,6 +10,7 @@ import {
   Users,
   ClipboardList,
   BookMarked,
+  BookCheck,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -54,6 +55,11 @@ const Dashboard = () => {
       title: "Issue Book",
       path: "/dashboard/issueBooks",
       icon: ClipboardList,
+    },
+    librarian && {
+      title: "Return Book",
+      path: "/dashboard/returnBook",
+      icon: BookCheck,
     },
     
   ].filter(Boolean);
