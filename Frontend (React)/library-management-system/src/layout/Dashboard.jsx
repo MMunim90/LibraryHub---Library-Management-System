@@ -13,6 +13,7 @@ import {
   BookCheck,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { iconURL } from "../services/Icon";
 
 const Dashboard = () => {
   const {authUser} = useContext(AuthContext);
@@ -90,7 +91,7 @@ const Dashboard = () => {
             onClick={() => setSidebarOpen(false)}
             className="flex items-center gap-3"
           >
-            <img className="h-11 w-11" src="../../public/icon.png" alt="" />
+            <img className="h-11 w-11" src={iconURL} alt="" />
 
             <h2 className="text-xl font-bold text-white">
               Library<span className="text-blue-300">Hub</span>

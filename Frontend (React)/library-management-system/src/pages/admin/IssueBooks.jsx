@@ -18,6 +18,7 @@ import {
 
 import { baseURL } from "../../services/BaseURL";
 import { AuthContext } from "../../context/AuthContext";
+import { iconURL } from "../../services/Icon";
 
 const IssueBooks = () => {
   const { accessToken } = useContext(AuthContext);
@@ -378,7 +379,7 @@ const IssueBooks = () => {
             <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
               <div>
                 <h2 className="flex items-center gap-2 text-xl font-semibold text-white">
-                  <img className="h-9 w-9" src="../../public/icon.png" alt="" />
+                  <img className="h-9 w-9" src={iconURL} alt="" />
                   Reservation Requests
                 </h2>
                 <p className="mt-1 text-sm text-slate-400">

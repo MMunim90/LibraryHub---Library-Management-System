@@ -1,0 +1,1 @@
+export const iconURL = "https://i.ibb.co.com/7dfg1VJy/icon.png"

@@ -13,6 +13,7 @@ import {
 import Swal from "sweetalert2";
 import { baseURL } from "../services/BaseURL";
 import { AuthContext } from "../context/AuthContext";
+import { iconURL } from "../services/Icon";
 
 const BookDetails = () => {
   const { book_id, id } = useParams();
@@ -278,7 +279,7 @@ const BookDetails = () => {
                     <div className="relative flex w-full items-center justify-between gap-2">
                       <img
                         className="h-11 w-11"
-                        src="../../public/icon.png"
+                        src={iconURL}
                         alt=""
                       />
                       <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-200/70 sm:text-xs">
@@ -375,14 +376,14 @@ const BookDetails = () => {
               </div>
 
               <div className="rounded-xl border border-blue-400/15 bg-blue-400/5 p-3 text-blue-300">
-                <img className="h-11 w-11" src="../../public/icon.png" alt="" />
+                <img className="h-11 w-11" src={iconURL} alt="" />
               </div>
             </div>
 
             {/* Description */}
             <div className="mt-8">
               <h2 className="flex items-center gap-2 text-lg font-bold text-white">
-                <img className="h-9 w-9" src="../../public/icon.png" alt="" />
+                <img className="h-9 w-9" src={iconURL} alt="" />
                 About This Book
               </h2>
 

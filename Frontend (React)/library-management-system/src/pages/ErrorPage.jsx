@@ -1,5 +1,6 @@
 import { House, Search, ArrowLeft, Library } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import { iconURL } from "../services/Icon";
 
 export default function ErrorPage() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function ErrorPage() {
         <nav className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center">
-              <img className="h-9 w-9" src="../../public/icon.png" alt="" />
+              <img className="h-9 w-9" src={iconURL} alt="" />
             </div>
 
             <div>
@@ -44,7 +45,7 @@ export default function ErrorPage() {
             <div className="absolute inset-0 rounded-full bg-blue-400/10 blur-2xl" />
 
             <div className="relative w-28 h-32 md:w-32 md:h-36 rounded-2xl border border-blue-300/30 bg-gradient-to-br from-blue-500/20 to-indigo-500/10 shadow-2xl flex flex-col items-center justify-center rotate-[-6deg]">
-              <img className="h-23 w-23" src="../../public/icon.png" alt="" />
+              <img className="h-23 w-23" src={iconURL} alt="" />
 
               <div className="mt-3 w-12 h-1 rounded-full bg-blue-300/50" />
             </div>

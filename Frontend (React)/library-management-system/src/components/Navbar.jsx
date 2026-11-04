@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { iconURL } from "../services/Icon";
 
 const Navbar = () => {
   const { authUser, logout } = useContext(AuthContext);
@@ -71,7 +72,7 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to={"/"} className="btn btn-ghost text-xl">
-          <img className="h-9 w-9" src="../../public/icon.png" alt="" />
+          <img className="h-9 w-9" src={iconURL} alt="" />
           <h2 className="text-xl font-bold text-white">
             Library<span className="text-blue-300">Hub</span>
           </h2>

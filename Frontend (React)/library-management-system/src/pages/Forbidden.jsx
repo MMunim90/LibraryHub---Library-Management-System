@@ -6,6 +6,7 @@ import {
   House,
   ShieldCheck,
 } from "lucide-react";
+import { iconURL } from "../services/Icon";
 
 const Forbidden = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Forbidden = () => {
         {/* Brand */}
         <Link to="/" className="mb-8 flex items-center justify-center gap-3">
           <div className="rounded-xl border border-blue-300/20 bg-blue-400/10 p-3 shadow-lg shadow-blue-950/30">
-            <img className="h-8 w-8" src="../../public/icon.png" alt="" />
+            <img className="h-8 w-8" src={iconURL} alt="" />
           </div>
 
           <span className="text-2xl font-bold tracking-tight text-white">

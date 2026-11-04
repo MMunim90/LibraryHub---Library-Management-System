@@ -1,11 +1,12 @@
 import { Link } from "react-router";
 import { Info, Mail } from "lucide-react";
+import { iconURL } from "../services/Icon";
 
 const Footer = () => {
   return (
     <footer className="footer sm:footer-horizontal mt-10 p-10 border-t-1">
       <aside>
-        <img className="h-25 w-25" src="../../public/icon.png" alt="" />
+        <img className="h-25 w-25" src={iconURL} alt="" />
         <h2 className="text-2xl font-bold text-white">
           Library<span className="text-blue-300">Hub</span>
         </h2>

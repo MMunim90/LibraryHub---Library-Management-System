@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 
 import { baseURL } from "../../services/BaseURL";
 import { AuthContext } from "../../context/AuthContext";
+import { iconURL } from "../../services/Icon";
 
 const BOOKS_URL = `${baseURL}/books/all`;
 const CREATE_BOOK_URL = `${baseURL}/admin/create_book`;
@@ -416,7 +417,7 @@ const ManageBooks = () => {
                 </p>
               </div>
               <div className="rounded-xl border border-blue-300/20 bg-blue-400/10 p-3">
-                <img className="h-7 w-7" src="../../public/icon.png" alt="" />
+                <img className="h-7 w-7" src={iconURL} alt="" />
               </div>
             </div>
             <p className="mt-3 text-xs text-slate-500">
@@ -585,7 +586,7 @@ const ManageBooks = () => {
                               ) : (
                                 <img
                                   className="h-7 w-7"
-                                  src="../../public/icon.png"
+                                  src={iconURL}
                                   alt=""
                                 />
                               )}
