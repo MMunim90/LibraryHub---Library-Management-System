@@ -7,6 +7,7 @@ import { Bounce, toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +15,8 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       // username=munim&password=12345
@@ -58,7 +61,7 @@ const Login = () => {
           className: "libraryhub-toast",
           progressClassName: "libraryhub-toast-progress",
         });
-        
+
         return;
       } else {
         document.getElementById("my_modal_3").close();
@@ -80,7 +83,28 @@ const Login = () => {
 
       setAuthUser(userData);
     } catch (error) {
-      console.log(error);
+      
+      // Close signup and login modals
+      document.getElementById("my_modal_3")?.close();
+
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed!",
+        text: error.message || "Something went wrong. Please try again.",
+        background: "#0f172a",
+        color: "#e2e8f0",
+        confirmButtonColor: "#60a5fa",
+        iconColor: "#f87171",
+        confirmButtonText: "Okay",
+        customClass: {
+          popup: "libraryhub-swal",
+          title: "libraryhub-swal-title",
+          confirmButton: "libraryhub-swal-button",
+        },
+      });
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -147,8 +171,19 @@ const Login = () => {
             </a>
           </div> */}
 
-          <button type="submit" className="btn btn-primary mt-10 w-full">
-            Login
+          <button
+            type="submit"
+            className="btn btn-primary mt-10 w-full"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="loading loading-spinner loading-sm"></span>
+                Signing in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </fieldset>
       </form>

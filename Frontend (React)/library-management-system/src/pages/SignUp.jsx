@@ -28,6 +28,8 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+
     try {
       const res = await fetch(`${baseURL}/create_user`, {
         method: "POST",
@@ -80,6 +82,11 @@ const SignUp = () => {
 
       setShowPassword(false);
     } catch (error) {
+
+      // Close signup and login modals
+      document.getElementById("signup_modal")?.close();
+      document.getElementById("my_modal_3")?.close();
+
       Swal.fire({
         icon: "error",
         title: "Signup Failed",
@@ -95,6 +102,8 @@ const SignUp = () => {
           confirmButton: "libraryhub-swal-button",
         },
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -244,7 +253,14 @@ const SignUp = () => {
           disabled={isSubmitting}
           className="btn btn-primary mt-4 w-full"
         >
-          {isSubmitting ? "Creating Account..." : "Create Account"}
+          {isSubmitting ? (
+            <>
+              <span className="loading loading-spinner loading-sm"></span>
+              Creating Account...
+            </>
+          ) : (
+            "Create Account"
+          )}
         </button>
       </form>
 
